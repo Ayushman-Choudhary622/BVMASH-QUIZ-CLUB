@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin | BVMASH Quiz Club</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style> body { background: #05080F; color: #E0E6ED; font-family: 'Inter', sans-serif; } .glass { background: rgba(255,255,255,0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.08); } input, select { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: #fff; } </style>
+</head>
+<body class="p-4 md:p-8">
+    <div id="login" class="min-h-screen flex items-center justify-center">
+        <div class="glass p-8 rounded-xl shadow-md w-96">
+            <h1 class="text-2xl font-bold mb-4 text-amber-400">Admin Login</h1>
+            <input type="password" id="pass" placeholder="Enter Password" class="border p-2 mb-4 w-full rounded outline-none">
+            <button onclick="login()" class="bg-amber-500 text-black px-4 py-2 rounded w-full font-bold">Login</button>
+            <p id="loginErr" class="text-red-500 text-sm mt-2 hidden">Incorrect password.</p>
+        </div>
+    </div>
+
+    <div id="dashboard" class="hidden">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold text-amber-400">Registrations Dashboard</h1>
+            <button onclick="logout()" class="text-sm text-red-500">Logout</button>
+        </div>
+        
+        <div class="glass p-4 rounded-xl mb-4 flex flex-wrap gap-4 items-end">
+            <input type="text" id="search" placeholder="Search Name/Email/ID..." class="border p-2 rounded flex-grow outline-none">
+            <select id="filterHouse" class="border p-2 rounded outline-none"><option value="">All Houses</option><option>JASMINE</option><option>LILY</option><option>LOTUS</option><option>DAFFODIL</option></select>
+            <select id="filterClass" class="border p-2 rounded outline-none"><option value="">All Classes</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select>
+            <button onclick="fetchData()" class="bg-gray-700 px-4 py-2 rounded">Filter</button>
+            <button onclick="exportCSV()" class="bg-green-600 px-4 py-2 rounded">Export CSV</button>
+        </div>
+
+        <div class="glass p-4 rounded-xl mb-4 flex flex-wrap gap-4 items-end">
+            <div><label class="text-xs block text-gray-400">Prefix</label><input type="text" id="prefix" value="BQC-" class="border p-1 rounded w-24 outline-none"></div>
+            <div><label class="text-xs block text-gray-400">Start Num</label><input type="number" id="startNum" value="1" class="border p-1 rounded w-24 outline-none"></div>
+            <button onclick="bulkAssign()" class="bg-indigo-600 px-4 py-2 rounded">Bulk Assign Roll Numbers</button>
+        </div>
+
+        <div class="glass rounded-xl overflow-x-auto">
+            <table class="w-full text-sm text-left">
+                <thead class="border-b border-gray-700">
+                    <tr>
+                        <th class="p-3 text-amber-400">Reg ID</th><th class="p-3 text-amber-400">Name</th><th class="p-3 text-amber-400">Class/Sec</th>
+                        <th class="p-3 text-amber-400">House</th><th class="p-3 text-amber-400">Contact</th><th class="p-3 text-amber-400">Status</th>
+                        <th class="p-3 text-amber-400">Roll No</th><th class="p-3 text-amber-400">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        const SCRIPT_URL = "PASTE-YOUR-WEB-APP-URL-HERE";
+        const ADMIN_PASS = "bvmash-admin"; 
+        let DATA = [];
+
+        function login() {
+            if (document.getElementById('pass').value === ADMIN_PASS) {
+                document.getElementById('login').classList.add('hidden');
+                document.getElementById('dashboard').classList.remove('hidden');
+                fetchData();
+            } else { document.getElementById('loginErr').classList.remove('hidden'); }
+        }
+        function logout() { location.reload(); }
+
+        async function fetchData() {
+            const res = await fetch(SCRIPT_URL);
+            let data = await res.json();
+            const s = document.getElementById('search').value.toLowerCase();
+            const h = document.getElementById('filterHouse').value;
+            const c = document.getElementById('filterClass').value;
+            DATA = data.filter(r => (!s || (r.fullName + r.email + r.regId).toLowerCase().includes(s)) && (!h || r.house === h) && (!c || r.studentClass === c));
+            renderTable(DATA);
+        }
+
+        function renderTable(data) {
+            document.getElementById('tableBody').innerHTML = data.map(r => `
+                <tr class="border-b border-gray-800 hover:bg-gray-800">
+                    <td class="p-3">${r.regId}</td>
+                    <td class="p-3">${r.fullName}<br><span class="text-xs text-gray-500">${r.schoolRollNo}</span></td>
+                    <td class="p-3">C${r.studentClass} / ${r.section}</td>
+                    <td class="p-3">${r.house}</td>
+                    <td class="p-3">${r.phone}<br><span class="text-xs text-gray-500">${r.email}</span></td>
+                    <td class="p-3"><select onchange="updateStatus('${r.regId}', this.value)" class="border p-1 rounded text-xs outline-none"><option ${r.status === 'Pending' ? 'selected' : ''}>Pending</option><option ${r.status === 'Verified' ? 'selected' : ''}>Verified</option><option ${r.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option><option ${r.status === 'Rejected' ? 'selected' : ''}>Rejected</option></select></td>
+                    <td class="p-3"><input type="text" value="${r.quizRollNo || ''}" id="roll-${r.regId}" class="border p-1 rounded w-24 outline-none"></td>
+                    <td class="p-3"><button onclick="saveRoll('${r.regId}')" class="bg-blue-500 px-2 py-1 rounded text-xs">Save</button></td>
+                </tr>
+            `).join('');
+        }
+
+        async function updateStatus(regId, status) { await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'update', regId, status }) }); fetchData(); }
+        async function saveRoll(regId) { const rollNo = document.getElementById(`roll-${regId}`).value; await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'update', regId, quizRollNo: rollNo, status: 'Verified' }) }); fetchData(); }
+        async function bulkAssign() {
+            const prefix = document.getElementById('prefix').value; let start = parseInt(document.getElementById('startNum').value);
+            for (let r of DATA) { if (r.status === 'Pending' && !r.quizRollNo) { let roll = prefix + String(start).padStart(3, '0'); await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'update', regId: r.regId, quizRollNo: roll, status: 'Verified' }) }); start++; } }
+            alert('Bulk assignment complete!'); fetchData();
+        }
+        function exportCSV() {
+            let csv = "Reg ID,Quiz Roll No,Name,Class,Section,Phone,School Roll,Email,House,Status,Timestamp\n";
+            DATA.forEach(r => { csv += `${r.regId},${r.quizRollNo || ''},${r.fullName},${r.studentClass},${r.section},${r.phone},${r.schoolRollNo},${r.email},${r.house},${r.status},${r.timestamp}\n`; });
+            window.open(URL.createObjectURL(new Blob([csv], { type: 'text/csv' })));
+        }
+    </script>
+</body>
+</html>
