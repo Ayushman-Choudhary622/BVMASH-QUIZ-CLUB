@@ -5,169 +5,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BVMASH Quiz Club | Learn. Think. Compete.</title>
-    <meta name="description" content="Official registration portal for the BVMASH Quiz Club. Open to Classes 3-10.">
     <meta name="author" content="Ayushman Choudhary">
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;0,700;1,500&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --ink: #152036;
-            --bg: #F6F3EA;
-            --gold: #B0873A;
-            --jasmine: #2E7D46;
-            --lily: #B23A32;
-            --lotus: #2A5490;
-            --daffodil: #C99400;
-            --font-serif: 'Fraunces', serif;
-            --font-sans: 'IBM Plex Sans', sans-serif;
-        }
-
+        :root { --bg: #05080F; --glass: rgba(255,255,255,0.03); --border: rgba(255,255,255,0.08); --text: #E0E6ED; --text-dim: #8B9BB4; --gold: #D4AF37; --jasmine: #2E7D46; --lily: #B23A32; --lotus: #2A5490; --daffodil: #C99400; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
+        
+        /* Animated Background Canvas */
+        #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        
+        /* Intros */
+        #ayushman-intro { position: fixed; inset: 0; background: #000; z-index: 3000; display: flex; align-items: center; justify-content: center; animation: fadeOut 1s forwards 1.5s; }
+        .ayushman-text { color: #fff; font-family: 'Playfair Display', serif; font-size: 1.8rem; letter-spacing: 4px; opacity: 0; animation: textIn 1s forwards 0.2s; }
+        @keyframes textIn { to { opacity: 1; } } @keyframes fadeOut { to { opacity: 0; visibility: hidden; } }
+        
+        #intro-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 2000; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; opacity: 0; visibility: hidden; animation: showIntro 0s forwards 1.5s, hideIntro 0.8s forwards 3.5s; }
+        @keyframes showIntro { to { opacity: 1; visibility: visible; } } @keyframes hideIntro { to { opacity: 0; visibility: hidden; } }
+        .intro-monogram { font-family: 'Playfair Display', serif; font-size: 4rem; font-weight: 700; color: var(--text); animation: fadeUp 1s ease forwards; }
+        .intro-tagline { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.2rem; color: var(--gold); margin-top: 0.5rem; animation: fadeUp 1s ease 0.5s forwards; opacity: 0; }
+        .intro-credit { font-size: 0.75rem; color: var(--text-dim); margin-top: 2rem; text-transform: uppercase; letter-spacing: 2px; animation: fadeUp 1s ease 1s forwards; opacity: 0; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        body {
-            font-family: var(--font-sans);
-            background-color: var(--bg);
-            color: var(--ink);
-            line-height: 1.6;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        #intro-overlay {
-            position: fixed; inset: 0; background: var(--bg); z-index: 1000;
-            display: flex; flex-direction: column; justify-content: center;
-            align-items: center; text-align: center;
-            transition: opacity 0.8s ease, visibility 0.8s ease;
-        }
-        #intro-overlay.hidden { opacity: 0; visibility: hidden; }
-        .intro-monogram {
-            font-family: var(--font-serif); font-size: clamp(2.5rem, 8vw, 5rem);
-            font-weight: 700; letter-spacing: 6px; color: var(--ink);
-            animation: fadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-        }
-        .intro-tagline {
-            font-family: var(--font-serif); font-style: italic; font-size: 1.2rem;
-            color: var(--gold); margin-top: 0.5rem;
-            animation: fadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards; opacity: 0;
-        }
-        .intro-credit {
-            font-size: 0.75rem; color: rgba(21, 32, 54, 0.6); margin-top: 2rem;
-            text-transform: uppercase; letter-spacing: 1px;
-            animation: fadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 0.6s forwards; opacity: 0;
-        }
-
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
+        /* Glass Layout */
         header, main, footer { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
+        header { display: flex; justify-content: space-between; align-items: center; padding-top: 1.5rem; padding-bottom: 1.5rem; position: sticky; top: 0; background: rgba(5,8,15,0.7); backdrop-filter: blur(15px); z-index: 100; border-bottom: 1px solid var(--border); }
+        .wordmark { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 600; text-decoration: none; color: var(--text); }
+        nav { display: flex; gap: 1.5rem; align-items: center; }
+        nav a { text-decoration: none; color: var(--text-dim); font-weight: 500; font-size: 0.9rem; transition: color 0.3s; }
+        nav a:hover { color: var(--gold); }
+        .btn { display: inline-block; padding: 0.7rem 1.4rem; border: 1px solid var(--gold); text-decoration: none; color: var(--gold); font-weight: 600; font-size: 0.85rem; border-radius: 50px; transition: all 0.3s; cursor: pointer; background: transparent; }
+        .btn-primary { background: var(--gold); color: #000; }
+        .btn-primary:hover { box-shadow: 0 0 20px rgba(212, 175, 55, 0.4); transform: translateY(-2px); }
         
-        header {
-            display: flex; justify-content: space-between; align-items: center;
-            padding-top: 1.5rem; padding-bottom: 1.5rem; position: sticky; top: 0;
-            background: rgba(246, 243, 234, 0.9); backdrop-filter: blur(10px);
-            z-index: 100; border-bottom: 1px solid rgba(21, 32, 54, 0.05);
-        }
-        .wordmark { font-family: var(--font-serif); font-size: 1.4rem; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: 1px; }
-        nav { display: flex; gap: 2rem; align-items: center; }
-        nav a { text-decoration: none; color: var(--ink); font-weight: 500; font-size: 0.9rem; transition: color 0.3s; }
-        nav a:not(.btn):hover { color: var(--gold); }
-        .btn {
-            display: inline-block; padding: 0.6rem 1.4rem; border: 1px solid var(--ink);
-            text-decoration: none; color: var(--ink); font-weight: 600; font-size: 0.85rem;
-            border-radius: 4px; transition: all 0.3s; cursor: pointer; background: transparent; font-family: var(--font-sans);
-        }
-        .btn-primary { background: var(--ink); color: var(--bg); }
-        .btn-primary:hover { background: var(--gold); border-color: var(--gold); }
-        .menu-toggle { display: none; background: none; border: none; cursor: pointer; font-size: 1.5rem; color: var(--ink); }
-
-        #hero { display: flex; justify-content: space-between; align-items: center; padding: 5rem 0 6rem; position: relative; }
-        .hero-content { max-width: 600px; z-index: 2; }
-        .eyebrow { text-transform: uppercase; letter-spacing: 3px; font-size: 0.75rem; color: var(--gold); font-weight: 600; margin-bottom: 1.5rem; display: block; }
-        h1 { font-family: var(--font-serif); font-size: clamp(2.8rem, 6vw, 4.5rem); line-height: 1.05; margin-bottom: 1rem; font-weight: 700; }
-        .tagline { font-family: var(--font-serif); font-style: italic; font-size: 1.5rem; color: var(--gold); margin-bottom: 2rem; font-weight: 400; }
-        .hero-content p { margin-bottom: 2.5rem; max-width: 500px; color: rgba(21, 32, 54, 0.8); }
-        .hero-actions { display: flex; gap: 1rem; }
-        .hero-svg { position: absolute; right: -50px; top: 10%; width: 500px; height: 500px; opacity: 0.08; pointer-events: none; z-index: 1; }
-
         section { padding: 5rem 0; }
-        h2 { font-family: var(--font-serif); font-size: clamp(2rem, 4vw, 2.5rem); margin-bottom: 0.5rem; font-weight: 600; }
-        .section-sub { color: var(--gold); margin-bottom: 3rem; font-style: italic; font-family: var(--font-serif); }
-
-        .houses-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
-        .house-card { border-left: 4px solid #ccc; background: #fff; padding: 1.5rem; display: flex; align-items: center; gap: 1.5rem; transition: transform 0.3s, box-shadow 0.3s; position: relative; overflow: hidden; }
-        .house-card:hover { transform: translateY(-4px); box-shadow: 0 10px 20px rgba(21, 32, 54, 0.05); }
-        .house-watermark { position: absolute; right: -10px; bottom: -20px; font-family: var(--font-serif); font-size: 6rem; font-weight: 700; opacity: 0.05; pointer-events: none; }
-        .house-monogram { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-serif); font-size: 1.3rem; font-weight: 700; color: white; flex-shrink: 0; }
-        .house-info h3 { font-family: var(--font-serif); font-size: 1.1rem; font-weight: 600; }
-        .house-info span { font-size: 0.8rem; color: rgba(21, 32, 54, 0.5); text-transform: uppercase; letter-spacing: 1px; }
-
-        .details-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2.5rem; }
-        .detail-block { border-top: 1px solid rgba(21, 32, 54, 0.2); padding-top: 1.5rem; }
-        .detail-block h3 { font-family: var(--font-serif); margin-bottom: 0.5rem; font-size: 1.2rem; font-weight: 600; }
-        .detail-block p { font-size: 0.95rem; color: rgba(21, 32, 54, 0.7); }
-
-        #register { background: #fff; padding: 5rem 1.5rem; border-top: 1px solid rgba(21, 32, 54, 0.05); border-bottom: 1px solid rgba(21, 32, 54, 0.05); }
-        .form-container { max-width: 700px; margin: 0 auto; }
-        .form-group { margin-bottom: 1.75rem; }
-        label { display: block; font-weight: 600; margin-bottom: 0.5rem; font-size: 0.9rem; color: var(--ink); }
-        .req { color: var(--lily); margin-left: 2px; }
-        input[type="text"], input[type="tel"], input[type="email"], select { width: 100%; padding: 0.8rem 1rem; border: 1px solid rgba(21, 32, 54, 0.2); border-radius: 4px; font-family: var(--font-sans); font-size: 1rem; background: var(--bg); transition: border-color 0.3s, background 0.3s; }
-        input:focus, select:focus { outline: none; border-color: var(--gold); background: #fff; box-shadow: 0 0 0 3px rgba(176, 135, 58, 0.1); }
-        .error-msg { color: var(--lily); font-size: 0.85rem; margin-top: 0.3rem; display: none; }
+        h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 6vw, 4rem); line-height: 1.1; margin-bottom: 1rem; background: linear-gradient(to right, #fff, #8B9BB4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .tagline { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.5rem; color: var(--gold); margin-bottom: 2rem; }
+        .section-sub { color: var(--text-dim); margin-bottom: 2rem; }
         
-        .houses-selector { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
-        .house-tile { border: 1.5px solid rgba(21, 32, 54, 0.15); padding: 1rem; border-radius: 4px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 0.75rem; justify-content: flex-start; font-weight: 500; font-size: 0.95rem; background: var(--bg); }
-        .house-tile:hover { border-color: rgba(21, 32, 54, 0.4); }
-        .house-tile input { position: absolute; opacity: 0; width: 0; height: 0; }
-        .color-dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
-        
-        .consent-box { border: 1px solid rgba(21, 32, 54, 0.2); padding: 1.5rem; border-radius: 4px; background: var(--bg); margin-top: 0.5rem; }
-        .consent-box label { font-weight: 400; font-size: 0.9rem; display: flex; gap: 0.75rem; align-items: flex-start; cursor: pointer; line-height: 1.5; }
-        .consent-box input[type="checkbox"] { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--ink); flex-shrink: 0; }
-        
-        .submit-btn { width: 100%; padding: 1.2rem; background: var(--ink); color: var(--bg); border: none; font-size: 1rem; font-weight: 600; cursor: pointer; transition: background 0.3s; font-family: var(--font-sans); letter-spacing: 1px; text-transform: uppercase; margin-top: 1rem; }
-        .submit-btn:hover { background: var(--gold); }
-        .submit-btn:disabled { background: rgba(21, 32, 54, 0.4); cursor: not-allowed; }
-        .hp { position: absolute; left: -9999px; opacity: 0; height: 0; width: 0; pointer-events: none; }
-
-        #confirmation { display: none; text-align: center; padding: 4rem 0; }
-        .check-badge { width: 64px; height: 64px; border-radius: 50%; background: var(--jasmine); color: white; font-size: 2rem; margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center; }
-        .reg-id-box { border: 1px dashed rgba(21, 32, 54, 0.3); padding: 1.5rem; margin: 2rem auto; max-width: 350px; font-family: var(--font-serif); font-size: 1.3rem; background: var(--bg); border-radius: 4px; }
-        .reg-id-box span { display: block; font-family: var(--font-sans); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: rgba(21, 32, 54, 0.6); margin-bottom: 0.5rem; }
-
-        footer { padding: 3rem 1.5rem; text-align: center; }
-        .footer-tagline { font-family: var(--font-serif); font-style: italic; margin-bottom: 1.5rem; font-size: 1.1rem; }
-        .footer-links { margin-bottom: 2rem; display: flex; gap: 2rem; justify-content: center; }
-        .footer-links a { color: rgba(21, 32, 54, 0.7); text-decoration: none; font-size: 0.9rem; transition: color 0.3s; }
-        .footer-links a:hover { color: var(--gold); }
-        .credit-line { font-size: 0.8rem; color: rgba(21, 32, 54, 0.4); font-style: italic; }
-
-        .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
-        .reveal.visible { opacity: 1; transform: translateY(0); }
-
-        @media (max-width: 768px) {
-            .hero-svg { display: none; }
-            #hero { padding: 3rem 0 4rem; }
-            .menu-toggle { display: block; }
-            nav #nav-links { display: none; flex-direction: column; position: absolute; top: 70px; right: 0; background: var(--bg); width: 100%; padding: 1.5rem; border-bottom: 1px solid rgba(21, 32, 54, 0.1); gap: 1rem; }
-            nav.open #nav-links { display: flex; }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
-            .reveal { opacity: 1; transform: none; }
-            #intro-overlay { display: none; }
-        }
+        .glass-card { background: var(--glass); backdrop-filter: blur(10px); border: 1px solid var(--border); padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; transition: transform 0.3s, border-color 0.3s; }
+        .glass-card:hover { transform: translateY(-5px); border-color: var(--gold); }
     </style>
 </head>
-<body>
 
-    <div id="intro-overlay" aria-hidden="true">
+    <body>
+    <canvas id="bg-canvas"></canvas>
+    
+    <div id="ayushman-intro"><div class="ayushman-text">Ayushman Choudhary Productions</div></div>
+    <div id="intro-overlay">
         <div class="intro-monogram">BVMASH</div>
         <div class="intro-tagline">Learn. Think. Compete.</div>
         <div class="intro-credit">Designed &amp; developed by Ayushman Choudhary</div>
@@ -175,305 +61,158 @@
 
     <header>
         <a href="#" class="wordmark">BVMASH Quiz Club</a>
-        <nav id="main-nav">
-            <div id="nav-links">
-                <a href="#houses">Houses</a>
-                <a href="#details">Competition Details</a>
-                <a href="#register" class="btn btn-primary">Register Now</a>
-            </div>
-            <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button>
+        <nav>
+            <a href="#details">Details</a>
+            <a href="#register" class="btn btn-primary">Register Now</a>
         </nav>
     </header>
 
     <main>
         <section id="hero">
-            <div class="hero-content">
-                <span class="eyebrow">Registrations are open for Classes 3–10</span>
-                <h1>BVMASH Quiz Club</h1>
-                <div class="tagline">Learn. Think. Compete.</div>
-                <p>The BVMASH Quiz Club invites young minds to engage in a prestigious inter-house academic competition. Open to students from Classes 3 to 10, participants will represent one of four distinguished houses.</p>
-                <div class="hero-actions">
-                    <a href="#register" class="btn btn-primary">Register Now</a>
-                    <a href="#details" class="btn">Competition Details</a>
-                </div>
-            </div>
-            
-            <svg class="hero-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 80 L30 40 L50 60 L70 20 L90 80" fill="none" stroke="#152036" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <circle cx="10" cy="80" r="1.5" fill="#B0873A" />
-                <circle cx="30" cy="40" r="1.5" fill="#B0873A" />
-                <circle cx="50" cy="60" r="1.5" fill="#B0873A" />
-                <circle cx="70" cy="20" r="1.5" fill="#B0873A" />
-                <circle cx="90" cy="80" r="1.5" fill="#B0873A" />
-                <text x="45" y="90" font-family="Fraunces, serif" font-size="30" fill="#152036" opacity="0.5">?</text>
-            </svg>
-        </section>
-
-        <section id="houses" class="reveal">
-            <h2>Four houses, one competition</h2>
-            <p class="section-sub">House colors are fixed and used throughout the competition.</p>
-            <div class="houses-grid">
-                <div class="house-card" style="border-color: var(--jasmine);">
-                    <div class="house-monogram" style="background: var(--jasmine);">J</div>
-                    <div class="house-info"><h3>Jasmine House</h3><span>Green</span></div>
-                    <div class="house-watermark">J</div>
-                </div>
-                <div class="house-card" style="border-color: var(--lily);">
-                    <div class="house-monogram" style="background: var(--lily);">L</div>
-                    <div class="house-info"><h3>Lily House</h3><span>Red</span></div>
-                    <div class="house-watermark">L</div>
-                </div>
-                <div class="house-card" style="border-color: var(--lotus);">
-                    <div class="house-monogram" style="background: var(--lotus);">L</div>
-                    <div class="house-info"><h3>Lotus House</h3><span>Blue</span></div>
-                    <div class="house-watermark">L</div>
-                </div>
-                <div class="house-card" style="border-color: var(--daffodil);">
-                    <div class="house-monogram" style="background: var(--daffodil);">D</div>
-                    <div class="house-info"><h3>Daffodil House</h3><span>Yellow</span></div>
-                    <div class="house-watermark">D</div>
-                </div>
+            <span style="color: var(--gold); font-weight: 600; letter-spacing: 3px; text-transform: uppercase; font-size: 0.8rem;">Registrations open for Classes 3–10</span>
+            <h1>BVMASH Quiz Club</h1>
+            <div class="tagline">Learn. Think. Compete.</div>
+            <p style="max-width: 500px; margin-bottom: 2rem; color: var(--text-dim);">A prestigious inter-house academic competition. Open to students from Classes 3 to 10, representing one of four distinguished houses.</p>
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <a href="#register" class="btn btn-primary">Register Now</a>
+                <a href="#details" class="btn">Competition Details</a>
             </div>
         </section>
 
-        <section id="details" class="reveal">
+        <section id="details">
             <h2>Competition Details</h2>
             <p class="section-sub">Everything you need to know before registering.</p>
-            <div class="details-grid">
-                <div class="detail-block"><h3>Eligibility</h3><p>Open to all students in Classes 3 through 10.</p></div>
-                <div class="detail-block"><h3>Houses</h3><p>Every participant competes as part of one of the four fixed houses.</p></div>
-                <div class="detail-block"><h3>Registration</h3><p>Fill the form once with accurate details to receive an internal registration ID as a receipt.</p></div>
-                <div class="detail-block"><h3>Official Quiz Roll Number</h3><p>Assigned later by organizers (target date: 16 September 2026). This is separate from the student's school roll number and is never generated in the browser.</p></div>
-                <div class="detail-block"><h3>Accurate Information</h3><p>Participants must provide accurate information; inaccurate submissions may be delayed during verification.</p></div>
-                <div class="detail-block"><h3>Consent</h3><p>Registering requires actively agreeing to a consent statement about how the submitted information will be used.</p></div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                <div class="glass-card"><h3 style="font-family: 'Playfair Display'; color: var(--gold);">Eligibility</h3><p>Open to all students in Classes 3 through 10.</p></div>
+                <div class="glass-card"><h3 style="font-family: 'Playfair Display'; color: var(--gold);">Houses</h3><p>Every participant competes as part of one of the four fixed houses.</p></div>
+                <div class="glass-card"><h3 style="font-family: 'Playfair Display'; color: var(--gold);">Official Roll Number</h3><p>Assigned later by organizers (target: 16 Sept 2026). Separate from school roll number.</p></div>
             </div>
+        </section>
+
+        <section id="gallery" style="text-align: center;">
+            <h2>Inauguration</h2>
+            <p class="section-sub">The official launch of the BVMASH Quiz Club.</p>
+            <div class="glass-card" style="display: inline-block; padding: 10px;">
+                <img src="assets/inauguration.jpg" alt="Inauguration" style="max-width: 100%; border-radius: 8px; height: auto;" onerror="this.parentElement.style.display='none'">
+            </div>
+        </section>
+
+        <section id="resources" style="text-align: center;">
+            <h2>Notices & Resources</h2>
+            <p class="section-sub">Download official documents and rulebooks.</p>
+            <a href="assets/rulebook.pdf" target="_blank" class="btn">📄 Official Rulebook (PDF)</a>
         </section>
 
         <section id="register">
-            <div class="form-container reveal">
+            <div style="max-width: 700px; margin: 0 auto;">
                 <h2>Register Now</h2>
-                <p class="section-sub">Please fill out the form carefully.</p>
-                
-                <form id="reg-form" novalidate>
-                    <div class="hp" aria-hidden="true">
-                        <label>Leave this empty: <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="fullName">Full name <span class="req">*</span></label>
-                        <input type="text" id="fullName" name="fullName" required>
-                        <div class="error-msg" id="err-fullName"></div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="studentClass">Class <span class="req">*</span></label>
-                        <select id="studentClass" name="studentClass" required>
-                            <option value="">Select your class</option>
-                            <option value="3">Class 3</option><option value="4">Class 4</option>
-                            <option value="5">Class 5</option><option value="6">Class 6</option>
-                            <option value="7">Class 7</option><option value="8">Class 8</option>
-                            <option value="9">Class 9</option><option value="10">Class 10</option>
-                        </select>
-                        <div class="error-msg" id="err-studentClass"></div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="section">Section <span class="req">*</span></label>
-                        <input type="text" id="section" name="section" maxlength="10" required>
-                        <div class="error-msg" id="err-section"></div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="phone">Phone number <span class="req">*</span></label>
-                        <input type="tel" id="phone" name="phone" required>
-                        <div class="error-msg" id="err-phone"></div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="schoolRollNo">School roll number <span class="req">*</span></label>
-                        <input type="text" id="schoolRollNo" name="schoolRollNo" maxlength="30" required>
-                        <div class="error-msg" id="err-schoolRollNo"></div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="email">Email address <span class="req">*</span></label>
-                        <input type="email" id="email" name="email" placeholder="you@gmail.com" required>
-                        <div class="error-msg" id="err-email"></div>
-                    </div>
-
-                    <div class="form-group">
-                        <fieldset>
-                            <legend style="font-weight: 600; margin-bottom: 0.5rem; font-size: 0.9rem; color: var(--ink); padding: 0;">House <span class="req">*</span></legend>
-                            <div class="houses-selector" id="houseSelector">
-                                <label class="house-tile" data-color="jasmine"><input type="radio" name="house" value="JASMINE" required><span class="color-dot" style="background: var(--jasmine);"></span> Jasmine</label>
-                                <label class="house-tile" data-color="lily"><input type="radio" name="house" value="LILY" required><span class="color-dot" style="background: var(--lily);"></span> Lily</label>
-                                <label class="house-tile" data-color="lotus"><input type="radio" name="house" value="LOTUS" required><span class="color-dot" style="background: var(--lotus);"></span> Lotus</label>
-                                <label class="house-tile" data-color="daffodil"><input type="radio" name="house" value="DAFFODIL" required><span class="color-dot" style="background: var(--daffodil);"></span> Daffodil</label>
-                            </div>
-                        </fieldset>
-                        <div class="error-msg" id="err-house"></div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Consent <span class="req">*</span></label>
-                        <div class="consent-box">
-                            <label for="consent">
-                                <input type="checkbox" id="consent" name="consent" required>
-                                <span>I confirm that the information above is accurate, and I agree that it is being submitted for the purpose of participation and administration of the BVMASH Quiz Club, including registration processing, house allocation record-keeping, and assignment of an official Quiz Club roll number.</span>
-                            </label>
+                <form id="reg-form" novalidate class="glass-card">
+                    <div style="position: absolute; left: -9999px;"><input type="text" name="website"></div>
+                    
+                    <div class="form-group" style="margin-bottom: 1.5rem;"><label style="display:block; margin-bottom:0.5rem; font-size:0.9rem; color:var(--text-dim);">Full name <span style="color:var(--lily)">*</span></label><input type="text" id="fullName" required style="width:100%; padding:0.8rem; background:rgba(0,0,0,0.3); border:1px solid var(--border); border-radius:6px; color:var(--text)"><div style="color:var(--lily); font-size:0.85rem; display:none;" id="err-fullName"></div></div>
+                    <div class="form-group" style="margin-bottom: 1.5rem;"><label style="display:block; margin-bottom:0.5rem; font-size:0.9rem; color:var(--text-dim);">Class <span style="color:var(--lily)">*</span></label><select id="studentClass" required style="width:100%; padding:0.8rem; background:rgba(0,0,0,0.3); border:1px solid var(--border); border-radius:6px; color:var(--text)"><option value="">Select</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select><div style="color:var(--lily); font-size:0.85rem; display:none;" id="err-studentClass"></div></div>
+                    <div class="form-group" style="margin-bottom: 1.5rem;"><label style="display:block; margin-bottom:0.5rem; font-size:0.9rem; color:var(--text-dim);">Section <span style="color:var(--lily)">*</span></label><input type="text" id="section" maxlength="10" required style="width:100%; padding:0.8rem; background:rgba(0,0,0,0.3); border:1px solid var(--border); border-radius:6px; color:var(--text)"><div style="color:var(--lily); font-size:0.85rem; display:none;" id="err-section"></div></div>
+                    <div class="form-group" style="margin-bottom: 1.5rem;"><label style="display:block; margin-bottom:0.5rem; font-size:0.9rem; color:var(--text-dim);">Phone number <span style="color:var(--lily)">*</span></label><input type="tel" id="phone" required style="width:100%; padding:0.8rem; background:rgba(0,0,0,0.3); border:1px solid var(--border); border-radius:6px; color:var(--text)"><div style="color:var(--lily); font-size:0.85rem; display:none;" id="err-phone"></div></div>
+                    <div class="form-group" style="margin-bottom: 1.5rem;"><label style="display:block; margin-bottom:0.5rem; font-size:0.9rem; color:var(--text-dim);">School roll number <span style="color:var(--lily)">*</span></label><input type="text" id="schoolRollNo" maxlength="30" required style="width:100%; padding:0.8rem; background:rgba(0,0,0,0.3); border:1px solid var(--border); border-radius:6px; color:var(--text)"><div style="color:var(--lily); font-size:0.85rem; display:none;" id="err-schoolRollNo"></div></div>
+                    <div class="form-group" style="margin-bottom: 1.5rem;"><label style="display:block; margin-bottom:0.5rem; font-size:0.9rem; color:var(--text-dim);">Email address <span style="color:var(--lily)">*</span></label><input type="email" id="email" placeholder="you@gmail.com" required style="width:100%; padding:0.8rem; background:rgba(0,0,0,0.3); border:1px solid var(--border); border-radius:6px; color:var(--text)"><div style="color:var(--lily); font-size:0.85rem; display:none;" id="err-email"></div></div>
+                    
+                    <div class="form-group" style="margin-bottom: 1.5rem;">
+                        <label style="display:block; margin-bottom:0.5rem; font-size:0.9rem; color:var(--text-dim);">House <span style="color:var(--lily)">*</span></label>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+                            <label style="border:1px solid var(--border); padding:1rem; border-radius:6px; cursor:pointer; display:flex; align-items:center; gap:0.5rem;"><input type="radio" name="house" value="JASMINE" required style="width:auto"> 🟢 Jasmine</label>
+                            <label style="border:1px solid var(--border); padding:1rem; border-radius:6px; cursor:pointer; display:flex; align-items:center; gap:0.5rem;"><input type="radio" name="house" value="LILY" required style="width:auto"> 🔴 Lily</label>
+                            <label style="border:1px solid var(--border); padding:1rem; border-radius:6px; cursor:pointer; display:flex; align-items:center; gap:0.5rem;"><input type="radio" name="house" value="LOTUS" required style="width:auto"> 🔵 Lotus</label>
+                            <label style="border:1px solid var(--border); padding:1rem; border-radius:6px; cursor:pointer; display:flex; align-items:center; gap:0.5rem;"><input type="radio" name="house" value="DAFFODIL" required style="width:auto"> 🟡 Daffodil</label>
                         </div>
-                        <div class="error-msg" id="err-consent"></div>
+                        <div style="color:var(--lily); font-size:0.85rem; display:none;" id="err-house"></div>
                     </div>
 
-                    <button type="submit" class="submit-btn" id="submitBtn">Register</button>
-                    <div class="error-msg" id="err-general" style="text-align: center; margin-top: 1rem; font-weight: bold; font-size: 0.95rem;"></div>
+                    <div class="form-group" style="border: 1px solid var(--border); padding: 1rem; border-radius: 6px; margin-bottom:1.5rem;">
+                        <label style="font-weight: 400; display: flex; gap: 0.5rem; align-items: flex-start; color:var(--text-dim); font-size:0.9rem;"><input type="checkbox" id="consent" required style="width: auto; margin-top: 5px; background:rgba(0,0,0,0.3);"><span>I confirm that the information above is accurate, and I agree that it is being submitted for the purpose of participation and administration of the BVMASH Quiz Club.</span></label>
+                        <div style="color:var(--lily); font-size:0.85rem; display:none;" id="err-consent"></div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1rem; border:none;" id="submitBtn">Register</button>
+                    <div style="color:var(--lily); text-align: center; margin-top: 1rem; font-weight: bold; display:none;" id="err-general"></div>
                 </form>
 
-                <div id="confirmation">
-                    <div class="check-badge">✓</div>
+                <div id="confirmation" style="display: none; text-align: center; padding: 3rem 0;">
+                    <div style="width: 60px; height: 60px; background: var(--jasmine); color: #fff; border-radius: 50%; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; font-size: 2rem;">✓</div>
                     <h2>Registration received.</h2>
-                    <p style="max-width: 500px; margin: 1rem auto;">Your registration was successfully received. The official BVMASH Quiz Club roll number will be assigned later by organizers (target: 16 September 2026) and is separate from your school roll number.</p>
-                    <div class="reg-id-box">
-                        <span>Registration ID</span>
-                        <strong id="regIdDisplay"></strong>
-                    </div>
-                    <p style="font-size: 0.85rem; color: rgba(21, 32, 54, 0.6); font-style: italic;">Note: This ID is not the official Quiz Club roll number.</p>
+                    <p style="color:var(--text-dim)">Your official BVMASH Quiz Club roll number will be assigned later (target: 16 Sept 2026).</p>
+                    <div class="glass-card" style="border: 1px dashed var(--gold); padding: 1rem; margin: 2rem auto; max-width: 300px;"><span style="font-size: 0.8rem; text-transform: uppercase; color:var(--text-dim)">Registration ID</span><br><strong id="regIdDisplay" style="font-size: 1.5rem; font-family: 'Playfair Display'; color:var(--gold)"></strong></div>
+                    <p style="font-size: 0.8rem; color: var(--text-dim);">Note: This ID is not the official Quiz Roll Number.</p>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer>
-        <div class="footer-tagline">BVMASH Quiz Club · Learn. Think. Compete.</div>
-        <div class="footer-links">
-            <a href="#details">Competition Details</a>
-            <a href="#register">Register</a>
-            <a href="admin.html">Organizer Login</a>
-        </div>
-        <div class="credit-line">Crafted by Ayushman Choudhary</div>
+    <footer style="text-align: center; padding: 2rem 1.5rem; border-top: 1px solid var(--border); margin-top: 2rem;">
+        <div style="font-family: 'Playfair Display', serif; font-style: italic; margin-bottom: 1rem; color:var(--gold)">BVMASH Quiz Club · Learn. Think. Compete.</div>
+        <a href="admin.html" style="color: var(--text-dim); font-size: 0.9rem; text-decoration: none;">Organizer Login</a>
+        <div style="font-size: 0.8rem; color: #555; margin-top: 1rem;">Crafted by Ayushman Choudhary</div>
     </footer>
-    <script>
-        const SCRIPT_URL = "PASTE-YOUR-WEB-APP-URL-HERE";
 
-        window.addEventListener('load', () => {
-            setTimeout(() => { document.getElementById('intro-overlay').classList.add('hidden'); }, 2000);
-        });
-
-        const menuToggle = document.getElementById('menuToggle');
-        const mainNav = document.getElementById('main-nav');
-        menuToggle.addEventListener('click', () => { mainNav.classList.toggle('open'); });
-        document.querySelectorAll('#nav-links a').forEach(link => {
-            link.addEventListener('click', () => { mainNav.classList.remove('open'); });
-        });
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
+            <script>
+        // Premium Particle Background Animation
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        resizeCanvas(); window.addEventListener('resize', resizeCanvas);
+        for(let i=0; i<50; i++) { particles.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, vx: (Math.random()-0.5)*0.5, vy: (Math.random()-0.5)*0.5 }); }
+        function animate() {
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            particles.forEach((p,i) => {
+                p.x += p.vx; p.y += p.vy;
+                if(p.x<0||p.x>canvas.width) p.vx*=-1; if(p.y<0||p.y>canvas.height) p.vy*=-1;
+                ctx.fillStyle = 'rgba(212, 175, 55, 0.4)'; ctx.beginPath(); ctx.arc(p.x, p.y, 2, 0, Math.PI*2); ctx.fill();
+                for(let j=i+1; j<particles.length; j++) {
+                    let dx = p.x - particles[j].x, dy = p.y - particles[j].y;
+                    let dist = Math.sqrt(dx*dx + dy*dy);
+                    if(dist < 120) { ctx.strokeStyle = `rgba(255, 255, 255, ${0.1 - dist/1200})`; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(particles[j].x, particles[j].y); ctx.stroke(); }
                 }
             });
-        }, { threshold: 0.1 });
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+            requestAnimationFrame(animate);
+        }
+        animate();
 
-        const sectionInput = document.getElementById('section');
-        sectionInput.addEventListener('input', (e) => { e.target.value = e.target.value.toUpperCase(); });
-
-        const tiles = document.querySelectorAll('.house-tile');
-        tiles.forEach(tile => {
-            const input = tile.querySelector('input');
-            input.addEventListener('change', () => {
-                tiles.forEach(t => {
-                    t.style.borderColor = 'rgba(21, 32, 54, 0.15)';
-                    t.style.backgroundColor = 'var(--bg)';
-                });
-                const colorVar = `--${tile.dataset.color}`;
-                const colorVal = getComputedStyle(document.documentElement).getPropertyValue(colorVar).trim();
-                tile.style.borderColor = colorVal;
-                tile.style.backgroundColor = `${colorVal}15`; 
-            });
-        });
-
+        // Form Logic
+        const SCRIPT_URL = "PASTE-YOUR-WEB-APP-URL-HERE";
         const form = document.getElementById('reg-form');
-        const submitBtn = document.getElementById('submitBtn');
-
-        function showError(id, message) {
-            const el = document.getElementById(`err-${id}`);
-            el.textContent = message;
-            el.style.display = 'block';
-        }
-        function clearErrors() {
-            document.querySelectorAll('.error-msg').forEach(el => el.style.display = 'none');
-        }
+        function showErr(id, msg) { let el = document.getElementById(`err-${id}`); el.textContent = msg; el.style.display = 'block'; }
+        function clearErr() { document.querySelectorAll('[id^="err-"]').forEach(e => e.style.display = 'none'); }
 
         form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            clearErrors();
-            let isValid = true;
-
-            const honeypot = document.querySelector('input[name="website"]').value;
-            if (honeypot) return; 
-
+            e.preventDefault(); clearErr(); let isValid = true;
+            if (document.querySelector('input[name="website"]').value) return;
+            
             const fullName = document.getElementById('fullName').value.trim();
-            if (!/^[A-Za-z.'\s]{3,80}$/.test(fullName)) { showError('fullName', 'Please enter a valid name (3-80 characters, letters only).'); isValid = false; }
-
+            if (!/^[A-Za-z.'\s]{3,80}$/.test(fullName)) { showErr('fullName', '3-80 letters only.'); isValid = false; }
             const studentClass = document.getElementById('studentClass').value;
-            if (!studentClass) { showError('studentClass', 'Please select your class.'); isValid = false; }
-
+            if (!studentClass) { showErr('studentClass', 'Select class.'); isValid = false; }
             const section = document.getElementById('section').value.trim();
-            if (!/^[A-Za-z0-9]{1,10}$/.test(section)) { showError('section', 'Max 10 characters, letters/numbers only.'); isValid = false; }
-
+            if (!/^[A-Za-z0-9]{1,10}$/.test(section)) { showErr('section', 'Max 10 chars.'); isValid = false; }
             const phone = document.getElementById('phone').value.trim();
-            if (!/^\+?[0-9]{9,15}$/.test(phone)) { showError('phone', 'Please enter a valid phone number (9-15 digits).'); isValid = false; }
-
+            if (!/^\+?[0-9]{9,15}$/.test(phone)) { showErr('phone', '9-15 digits.'); isValid = false; }
             const schoolRollNo = document.getElementById('schoolRollNo').value.trim();
-            if (!/^[A-Za-z0-9\-\/]{1,30}$/.test(schoolRollNo)) { showError('schoolRollNo', 'Letters, numbers, hyphens, slashes allowed. Max 30.'); isValid = false; }
-
+            if (!/^[A-Za-z0-9\-\/]{1,30}$/.test(schoolRollNo)) { showErr('schoolRollNo', 'Invalid format.'); isValid = false; }
             const email = document.getElementById('email').value.trim();
-            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showError('email', 'Please enter a valid email address.'); isValid = false; }
-
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showErr('email', 'Invalid email.'); isValid = false; }
             const house = document.querySelector('input[name="house"]:checked');
-            if (!house) { showError('house', 'Please select your house.'); isValid = false; }
-
+            if (!house) { showErr('house', 'Select house.'); isValid = false; }
             const consent = document.getElementById('consent').checked;
-            if (!consent) { showError('consent', 'You must agree to the consent statement to proceed.'); isValid = false; }
+            if (!consent) { showErr('consent', 'Must agree.'); isValid = false; }
 
             if (!isValid) return;
-
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Submitting…';
-
-            const payload = {
-                action: "register", fullName: fullName, studentClass: studentClass, section: section,
-                phone: phone, schoolRollNo: schoolRollNo, email: email,
-                house: house ? house.value : "", consentGiven: consent, website: honeypot
-            };
+            document.getElementById('submitBtn').disabled = true; document.getElementById('submitBtn').textContent = 'Submitting...';
 
             try {
-                const response = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
-                const result = await response.json();
-
-                if (result.error) {
-                    if (result.fieldErrors) {
-                        Object.keys(result.fieldErrors).forEach(field => { showError(field, result.fieldErrors[field]); });
-                    } else { showError('general', result.error); }
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'Register';
-                } else if (result.regId) {
-                    document.getElementById('regIdDisplay').textContent = result.regId;
-                    form.style.display = 'none';
-                    document.getElementById('confirmation').style.display = 'block';
-                    window.scrollTo({ top: document.getElementById('register').offsetTop, behavior: 'smooth' });
-                } else {
-                    showError('general', 'Unexpected response from server.');
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'Register';
-                }
-            } catch (error) {
-                showError('general', 'Could not reach the server. Please check your connection and try again.');
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Register';
-            }
+                const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: "register", fullName, studentClass, section, phone, schoolRollNo, email, house: house.value, consentGiven: consent }) });
+                const data = await res.json();
+                if (data.regId) { form.style.display = 'none'; document.getElementById('confirmation').style.display = 'block'; document.getElementById('regIdDisplay').textContent = data.regId; }
+                else { showErr('general', data.error || 'Server error'); document.getElementById('submitBtn').disabled = false; document.getElementById('submitBtn').textContent = 'Register'; }
+            } catch (err) { showErr('general', 'Network error. Try again.'); document.getElementById('submitBtn').disabled = false; document.getElementById('submitBtn').textContent = 'Register'; }
         });
     </script>
 </body>
