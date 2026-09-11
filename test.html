@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head><title>Firebase Test</title></head>
+<body>
+    <h2>Testing Firebase Connection</h2>
+    <button onclick="sendData()">Send Test Data</button>
+    <p id="status">Waiting...</p>
+
+    <script>
+        const DB_URL = "https://bvmash-e505a-default-rtdb.asia-southeast1.firebasedatabase.app";
+        
+        async function sendData() {
+            document.getElementById('status').innerText = "Sending...";
+            try {
+                const res = await fetch(`${DB_URL}/test.json`, {
+                    method: 'POST',
+                    body: JSON.stringify({ test: "Hello BVMASH", time: new Date().toISOString() })
+                });
+                const data = await res.json();
+                if (data.name) {
+                    document.getElementById('status').innerText = "SUCCESS! Check your Firebase Database.";
+                } else {
+                    document.getElementById('status').innerText = "FAILED: Firebase blocked it. Check Rules. Error: " + JSON.stringify(data);
+                }
+            } catch (e) {
+                document.getElementById('status').innerText = "NETWORK ERROR: " + e.message;
+            }
+        }
+    </script>
+</body>
+</html>
