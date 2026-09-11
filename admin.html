@@ -46,9 +46,10 @@
             </table>
         </div>
     </div>
-        <script>
-        let DB_URL = "https://bvmash-e505a-default-rtdb.asia-southeast1.firebasedatabase.app";
-        const ADMIN_PASS = "bvmash-admin"; // <--- CHANGE PASSWORD HERE
+
+    <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxnv0rllOWtif38qHrFBh7xJyO15e5stlrainAimsmdXQQZDHyIWm2iAzOV6YY10t4QNA/exec"; 
+        const ADMIN_PASS = "bvmash-admin"; 
         let DATA = [];
 
         function login() {
@@ -61,56 +62,46 @@
         function logout() { location.reload(); }
 
         async function fetchData() {
-            if (DB_URL.endsWith("/")) DB_URL = DB_URL.slice(0, -1);
-            if (!DB_URL.startsWith("http")) DB_URL = "https://" + DB_URL;
-
-            const res = await fetch(`${DB_URL}/registrations.json`);
-            const data = await res.json();
-            let rows = [];
-            for (let key in data) {
-                let row = data[key];
-                row.firebaseKey = key;
-                row.regId = "REG-" + key.substring(1, 7).toUpperCase();
-                rows.push(row);
-            }
+            const res = await fetch(SCRIPT_URL);
+            let data = await res.json();
             const s = document.getElementById('search').value.toLowerCase();
             const h = document.getElementById('filterHouse').value;
             const c = document.getElementById('filterClass').value;
-            DATA = rows.filter(r => (!s || (r.fullName + r.email + r.regId).toLowerCase().includes(s)) && (!h || r.house === h) && (!c || r.studentClass === c));
+            DATA = data.filter(r => (!s || (r["Full Name"] + r["Email"] + r["Reg ID"]).toLowerCase().includes(s)) && (!h || r["House"] === h) && (!c || String(r["Class"]) === c));
             renderTable(DATA);
         }
 
         function renderTable(data) {
             document.getElementById('tableBody').innerHTML = data.map(r => `
                 <tr class="border-b border-gray-800 hover:bg-gray-800">
-                    <td class="p-3">${r.regId}</td>
-                    <td class="p-3">${r.fullName}<br><span class="text-xs text-gray-500">${r.schoolRollNo}</span></td>
-                    <td class="p-3">C${r.studentClass} / ${r.section}</td>
-                    <td class="p-3">${r.house}</td>
-                    <td class="p-3">${r.phone}<br><span class="text-xs text-gray-500">${r.email}</span></td>
-                    <td class="p-3"><select onchange="updateStatus('${r.firebaseKey}', this.value)" class="border p-1 rounded text-xs outline-none"><option ${r.status === 'Pending' ? 'selected' : ''}>Pending</option><option ${r.status === 'Verified' ? 'selected' : ''}>Verified</option><option ${r.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option><option ${r.status === 'Rejected' ? 'selected' : ''}>Rejected</option></select></td>
-                    <td class="p-3"><input type="text" value="${r.quizRollNo || ''}" id="roll-${r.firebaseKey}" class="border p-1 rounded w-24 outline-none"></td>
-                    <td class="p-3"><button onclick="saveRoll('${r.firebaseKey}')" class="bg-blue-500 px-2 py-1 rounded text-xs">Save</button></td>
+                    <td class="p-3">${r["Reg ID"]}</td>
+                    <td class="p-3">${r["Full Name"]}<br><span class="text-xs text-gray-500">${r["School Roll No"]}</span></td>
+                    <td class="p-3">C${r["Class"]} / ${r["Section"]}</td>
+                    <td class="p-3">${r["House"]}</td>
+                    <td class="p-3">${r["Phone"]}<br><span class="text-xs text-gray-500">${r["Email"]}</span></td>
+                    <td class="p-3"><select onchange="updateStatus('${r["Reg ID"]}', this.value)" class="border p-1 rounded text-xs outline-none"><option ${r["Status"] === 'Pending' ? 'selected' : ''}>Pending</option><option ${r["Status"] === 'Verified' ? 'selected' : ''}>Verified</option><option ${r["Status"] === 'Cancelled' ? 'selected' : ''}>Cancelled</option><option ${r["Status"] === 'Rejected' ? 'selected' : ''}>Rejected</option></select></td>
+                    <td class="p-3"><input type="text" value="${r["Quiz Roll No"] || ''}" id="roll-${r["Reg ID"]}" class="border p-1 rounded w-24 outline-none"></td>
+                    <td class="p-3"><button onclick="saveRoll('${r["Reg ID"]}')" class="bg-blue-500 px-2 py-1 rounded text-xs">Save</button></td>
                 </tr>
             `).join('');
         }
 
-        async function updateRecord(firebaseKey, updates) {
-            await fetch(`${DB_URL}/registrations/${firebaseKey}.json`, { method: 'PATCH', body: JSON.stringify(updates) });
+        async function updateRecord(regId, updates) {
+            await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'update', regId, ...updates }) });
             fetchData();
         }
-        async function updateStatus(firebaseKey, status) { await updateRecord(firebaseKey, { status }); }
-        async function saveRoll(firebaseKey) { const rollNo = document.getElementById(`roll-${firebaseKey}`).value; await updateRecord(firebaseKey, { quizRollNo: rollNo, status: 'Verified' }); }
+        async function updateStatus(regId, status) { await updateRecord(regId, { status }); }
+        async function saveRoll(regId) { const rollNo = document.getElementById(`roll-${regId}`).value; await updateRecord(regId, { quizRollNo: rollNo, status: 'Verified' }); }
         
         async function bulkAssign() {
             const prefix = document.getElementById('prefix').value; let start = parseInt(document.getElementById('startNum').value);
-            for (let r of DATA) { if (r.status === 'Pending' && !r.quizRollNo) { let roll = prefix + String(start).padStart(3, '0'); await updateRecord(r.firebaseKey, { quizRollNo: roll, status: 'Verified' }); start++; } }
+            for (let r of DATA) { if (r["Status"] === 'Pending' && !r["Quiz Roll No"]) { let roll = prefix + String(start).padStart(3, '0'); await updateRecord(r["Reg ID"], { quizRollNo: roll, status: 'Verified' }); start++; } }
             alert('Bulk assignment complete!'); fetchData();
         }
         
         function exportCSV() {
             let csv = "Reg ID,Quiz Roll No,Name,Class,Section,Phone,School Roll,Email,House,Status,Timestamp\n";
-            DATA.forEach(r => { csv += `${r.regId},${r.quizRollNo || ''},${r.fullName},${r.studentClass},${r.section},${r.phone},${r.schoolRollNo},${r.email},${r.house},${r.status},${r.timestamp}\n`; });
+            DATA.forEach(r => { csv += `${r["Reg ID"]},${r["Quiz Roll No"] || ''},${r["Full Name"]},${r["Class"]},${r["Section"]},${r["Phone"]},${r["School Roll No"]},${r["Email"]},${r["House"]},${r["Status"]},${r["Timestamp"]}\n`; });
             window.open(URL.createObjectURL(new Blob([csv], { type: 'text/csv' })));
         }
     </script>
