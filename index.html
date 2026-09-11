@@ -12,21 +12,17 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
         #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
-        
-        /* Dynamic Ayushman Intro */
         #ayushman-intro { position: fixed; inset: 0; background: #000; z-index: 3000; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; animation: fadeOut 1s forwards 2.5s; }
         .ayushman-text { color: #fff; font-family: 'Playfair Display', serif; font-size: 1.8rem; letter-spacing: 4px; opacity: 0; transform: scale(0.9); animation: textIn 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards 0.2s; }
         .ayushman-subtext { color: var(--gold); font-size: 0.8rem; letter-spacing: 8px; margin-top: 0.5rem; opacity: 0; animation: textIn 1s ease forwards 1s; }
         .ayushman-line { width: 0; height: 1px; background: var(--gold); margin-top: 1.5rem; animation: drawLine 1s ease forwards 1.2s; }
         @keyframes textIn { to { opacity: 1; transform: scale(1); } } @keyframes drawLine { to { width: 150px; } } @keyframes fadeOut { to { opacity: 0; visibility: hidden; } }
-        
         #intro-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 2000; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; opacity: 0; visibility: hidden; animation: showIntro 0s forwards 2.5s, hideIntro 0.8s forwards 5s; }
         @keyframes showIntro { to { opacity: 1; visibility: visible; } } @keyframes hideIntro { to { opacity: 0; visibility: hidden; } }
         .intro-monogram { font-family: 'Playfair Display', serif; font-size: 4rem; font-weight: 700; color: var(--text); animation: fadeUp 1s ease forwards; }
         .intro-tagline { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.2rem; color: var(--gold); margin-top: 0.5rem; animation: fadeUp 1s ease 0.5s forwards; opacity: 0; }
         .intro-credit { font-size: 0.75rem; color: var(--text-dim); margin-top: 2rem; text-transform: uppercase; letter-spacing: 2px; animation: fadeUp 1s ease 1s forwards; opacity: 0; }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
         header, main, footer { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
         header { display: flex; justify-content: space-between; align-items: center; padding-top: 1.5rem; padding-bottom: 1.5rem; position: sticky; top: 0; background: rgba(5,8,15,0.7); backdrop-filter: blur(15px); z-index: 100; border-bottom: 1px solid var(--border); }
         .wordmark { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 600; text-decoration: none; color: var(--text); }
@@ -44,8 +40,6 @@
         .glass-card { background: var(--glass); backdrop-filter: blur(10px); border: 1px solid var(--border); padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; transition: transform 0.3s, border-color 0.3s; }
         .glass-card:hover { transform: translateY(-5px); border-color: var(--gold); }
         .in-st { width:100%; padding:0.8rem; background:rgba(0,0,0,0.3); border:1px solid var(--border); border-radius:6px; color:var(--text) }
-        
-        /* Premium House Tiles */
         .house-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
         .house-tile { border: 1px solid var(--border); padding: 1.2rem; border-radius: 8px; cursor: pointer; text-align: center; transition: all 0.3s; position: relative; overflow: hidden; color: var(--text-dim); font-weight: 600; }
         .house-tile input { display: none; }
@@ -149,7 +143,6 @@
         <div style="font-size: 0.8rem; color: #555; margin-top: 1rem;">Crafted by Ayushman Choudhary</div>
     </footer>
         <script>
-        // PASTE FIREBASE URL HERE - NO TRAILING SLASH!
         let DB_URL = "https://bvmash-e505a-default-rtdb.asia-southeast1.firebasedatabase.app"; 
         
         const canvas = document.getElementById('bg-canvas');
@@ -174,7 +167,6 @@
         }
         animate();
 
-        // Premium House Selection Logic
         function selectHouse(el) {
             document.querySelectorAll('.house-tile').forEach(t => t.classList.remove('active'));
             el.classList.add('active');
@@ -206,10 +198,10 @@
             if (!consent) { showErr('consent', 'Must agree.'); isValid = false; }
 
             if (!isValid) return;
-            document.getElementById('submitBtn').disabled = true; document.getElementById('submitBtn').textContent = 'Submitting...';
+            document.getElementById('submitBtn').disabled = true; 
+            document.getElementById('submitBtn').textContent = 'Submitting...';
 
             try {
-                // Clean URL to prevent errors
                 if (DB_URL.endsWith("/")) DB_URL = DB_URL.slice(0, -1);
                 if (!DB_URL.startsWith("http")) DB_URL = "https://" + DB_URL;
 
@@ -225,13 +217,14 @@
                     document.getElementById('confirmation').style.display = 'block';
                     document.getElementById('regIdDisplay').textContent = regId;
                 } else {
-                    // This will now show the exact Firebase error so you know why it failed!
                     showErr('general', 'Database Error: ' + JSON.stringify(data));
-                    document.getElementById('submitBtn').disabled = false; document.getElementById('submitBtn').textContent = 'Register';
+                    document.getElementById('submitBtn').disabled = false; 
+                    document.getElementById('submitBtn').textContent = 'Register';
                 }
             } catch (err) {
                 showErr('general', 'Network/URL Error: Check your Firebase URL.');
-                document.getElementById('submitBtn').disabled = false; document.getElementById('submitBtn').textContent = 'Register';
+                document.getElementById('submitBtn').disabled = false; 
+                document.getElementById('submitBtn').textContent = 'Register';
             }
         });
     </script>
