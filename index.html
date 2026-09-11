@@ -10,46 +10,59 @@
     <style>
         :root { --bg: #05080F; --glass: rgba(255,255,255,0.03); --border: rgba(255,255,255,0.08); --text: #E0E6ED; --text-dim: #8B9BB4; --gold: #D4AF37; --jasmine: #2E7D46; --lily: #B23A32; --lotus: #2A5490; --daffodil: #C99400; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--text); line-height: 1.8; overflow-x: hidden; font-size: 18px; /* Made text bigger */ }
         #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        
+        /* Dynamic Intros */
         #ayushman-intro { position: fixed; inset: 0; background: #000; z-index: 3000; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; animation: fadeOut 1s forwards 2.5s; }
-        .ayushman-text { color: #fff; font-family: 'Playfair Display', serif; font-size: 1.8rem; letter-spacing: 4px; opacity: 0; transform: scale(0.9); animation: textIn 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards 0.2s; }
-        .ayushman-subtext { color: var(--gold); font-size: 0.8rem; letter-spacing: 8px; margin-top: 0.5rem; opacity: 0; animation: textIn 1s ease forwards 1s; }
-        .ayushman-line { width: 0; height: 1px; background: var(--gold); margin-top: 1.5rem; animation: drawLine 1s ease forwards 1.2s; }
-        @keyframes textIn { to { opacity: 1; transform: scale(1); } } @keyframes drawLine { to { width: 150px; } } @keyframes fadeOut { to { opacity: 0; visibility: hidden; } }
+        .ayushman-text { color: #fff; font-family: 'Playfair Display', serif; font-size: 3rem; letter-spacing: 6px; opacity: 0; transform: scale(0.9); animation: textIn 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards 0.2s; }
+        .ayushman-subtext { color: var(--gold); font-size: 1rem; letter-spacing: 10px; margin-top: 1rem; opacity: 0; animation: textIn 1s ease forwards 1s; }
+        .ayushman-line { width: 0; height: 2px; background: var(--gold); margin-top: 2rem; animation: drawLine 1s ease forwards 1.2s; }
+        @keyframes textIn { to { opacity: 1; transform: scale(1); } } @keyframes drawLine { to { width: 200px; } } @keyframes fadeOut { to { opacity: 0; visibility: hidden; } }
+        
         #intro-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 2000; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; opacity: 0; visibility: hidden; animation: showIntro 0s forwards 2.5s, hideIntro 0.8s forwards 5s; }
         @keyframes showIntro { to { opacity: 1; visibility: visible; } } @keyframes hideIntro { to { opacity: 0; visibility: hidden; } }
-        .intro-monogram { font-family: 'Playfair Display', serif; font-size: 4rem; font-weight: 700; color: var(--text); animation: fadeUp 1s ease forwards; }
-        .intro-tagline { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.2rem; color: var(--gold); margin-top: 0.5rem; animation: fadeUp 1s ease 0.5s forwards; opacity: 0; }
-        .intro-credit { font-size: 0.75rem; color: var(--text-dim); margin-top: 2rem; text-transform: uppercase; letter-spacing: 2px; animation: fadeUp 1s ease 1s forwards; opacity: 0; }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        header, main, footer { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
-        header { display: flex; justify-content: space-between; align-items: center; padding-top: 1.5rem; padding-bottom: 1.5rem; position: sticky; top: 0; background: rgba(5,8,15,0.7); backdrop-filter: blur(15px); z-index: 100; border-bottom: 1px solid var(--border); }
-        .wordmark { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 600; text-decoration: none; color: var(--text); }
-        nav { display: flex; gap: 1.5rem; align-items: center; }
-        nav a { text-decoration: none; color: var(--text-dim); font-weight: 500; font-size: 0.9rem; transition: color 0.3s; }
+        .intro-monogram { font-family: 'Playfair Display', serif; font-size: 6rem; font-weight: 700; color: var(--text); animation: fadeUp 1s ease forwards; }
+        .intro-tagline { font-family: 'Playfair Display', serif; font-style: italic; font-size: 2rem; color: var(--gold); margin-top: 1rem; animation: fadeUp 1s ease 0.5s forwards; opacity: 0; }
+        .intro-credit { font-size: 1rem; color: var(--text-dim); margin-top: 3rem; text-transform: uppercase; letter-spacing: 3px; animation: fadeUp 1s ease 1s forwards; opacity: 0; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Lengthy Layout */
+        header, main, footer { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+        header { display: flex; justify-content: space-between; align-items: center; padding-top: 2rem; padding-bottom: 2rem; position: sticky; top: 0; background: rgba(5,8,15,0.8); backdrop-filter: blur(15px); z-index: 100; border-bottom: 1px solid var(--border); }
+        .wordmark { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 600; text-decoration: none; color: var(--text); }
+        nav { display: flex; gap: 2rem; align-items: center; }
+        nav a { text-decoration: none; color: var(--text-dim); font-weight: 500; font-size: 1.1rem; transition: color 0.3s; }
         nav a:hover { color: var(--gold); }
-        .btn { display: inline-block; padding: 0.7rem 1.4rem; border: 1px solid var(--gold); text-decoration: none; color: var(--gold); font-weight: 600; font-size: 0.85rem; border-radius: 50px; transition: all 0.3s; cursor: pointer; background: transparent; }
+        .btn { display: inline-block; padding: 1rem 2rem; border: 1px solid var(--gold); text-decoration: none; color: var(--gold); font-weight: 600; font-size: 1.1rem; border-radius: 50px; transition: all 0.3s; cursor: pointer; background: transparent; }
         .btn-primary { background: var(--gold); color: #000; }
-        .btn-primary:hover { box-shadow: 0 0 20px rgba(212, 175, 55, 0.4); transform: translateY(-2px); }
-        section { padding: 5rem 0; }
-        h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 6vw, 4rem); line-height: 1.1; margin-bottom: 1rem; background: linear-gradient(to right, #fff, #8B9BB4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 0.5rem; }
-        .tagline { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.5rem; color: var(--gold); margin-bottom: 2rem; }
-        .section-sub { color: var(--text-dim); margin-bottom: 2rem; }
-        .glass-card { background: var(--glass); backdrop-filter: blur(10px); border: 1px solid var(--border); padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; transition: transform 0.3s, border-color 0.3s; }
+        .btn-primary:hover { box-shadow: 0 0 25px rgba(212, 175, 55, 0.5); transform: translateY(-2px); }
+        
+        section { padding: 8rem 0; /* Made sections very tall */ }
+        h1 { font-family: 'Playfair Display', serif; font-size: clamp(3.5rem, 8vw, 6rem); line-height: 1.1; margin-bottom: 2rem; background: linear-gradient(to right, #fff, #8B9BB4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        h2 { font-family: 'Playfair Display', serif; font-size: 4rem; margin-bottom: 1rem; }
+        h3 { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--gold); margin-bottom: 1rem; }
+        .tagline { font-family: 'Playfair Display', serif; font-style: italic; font-size: 2.5rem; color: var(--gold); margin-bottom: 3rem; }
+        .section-sub { color: var(--text-dim); margin-bottom: 4rem; font-size: 1.2rem; }
+        .glass-card { background: var(--glass); backdrop-filter: blur(10px); border: 1px solid var(--border); padding: 3rem; border-radius: 16px; margin-bottom: 2rem; transition: transform 0.3s, border-color 0.3s; }
         .glass-card:hover { transform: translateY(-5px); border-color: var(--gold); }
-        .in-st { width:100%; padding:0.8rem; background:rgba(0,0,0,0.3); border:1px solid var(--border); border-radius:6px; color:var(--text) }
-        .house-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
-        .house-tile { border: 1px solid var(--border); padding: 1.2rem; border-radius: 8px; cursor: pointer; text-align: center; transition: all 0.3s; position: relative; overflow: hidden; color: var(--text-dim); font-weight: 600; }
+        .in-st { width:100%; padding:1.2rem; background:rgba(0,0,0,0.3); border:1px solid var(--border); border-radius:8px; color:var(--text); font-size:1.1rem; }
+        
+        /* Premium House Tiles */
+        .house-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-top: 2rem; }
+        .house-tile { border: 1px solid var(--border); padding: 2rem 1rem; border-radius: 12px; cursor: pointer; text-align: center; transition: all 0.3s; position: relative; overflow: hidden; color: var(--text-dim); font-weight: 600; font-size: 1.2rem; }
         .house-tile input { display: none; }
-        .house-tile::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--c); transition: width 0.3s; }
+        .house-tile::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 5px; background: var(--c); transition: width 0.3s; }
         .house-tile.active { border-color: var(--c); background: rgba(255,255,255,0.05); color: var(--text); }
         .house-tile.active::before { width: 100%; opacity: 0.1; }
+        
+        @media (max-width: 768px) { .house-grid { grid-template-columns: repeat(2, 1fr); } h2 { font-size: 2.5rem; } }
     </style>
 </head>
 <body>
     <canvas id="bg-canvas"></canvas>
+    
     <div id="ayushman-intro">
         <div class="ayushman-text">Ayushman Choudhary</div>
         <div class="ayushman-subtext">PRODUCTIONS</div>
@@ -60,97 +73,121 @@
         <div class="intro-tagline">Learn. Think. Compete.</div>
         <div class="intro-credit">Designed &amp; developed by Ayushman Choudhary</div>
     </div>
+
     <header>
         <a href="#" class="wordmark">BVMASH Quiz Club</a>
         <nav>
             <a href="#details">Details</a>
+            <a href="#rules">Rules</a>
             <a href="#register" class="btn btn-primary">Register Now</a>
         </nav>
     </header>
+
     <main>
         <section id="hero">
-            <span style="color: var(--gold); font-weight: 600; letter-spacing: 3px; text-transform: uppercase; font-size: 0.8rem;">Registrations open for Classes 3–10</span>
+            <span style="color: var(--gold); font-weight: 600; letter-spacing: 4px; text-transform: uppercase; font-size: 1rem;">Registrations open for Classes 3–10</span>
             <h1>BVMASH Quiz Club</h1>
             <div class="tagline">Learn. Think. Compete.</div>
-            <p style="max-width: 500px; margin-bottom: 2rem; color: var(--text-dim);">A prestigious inter-house academic competition. Open to students from Classes 3 to 10, representing one of four distinguished houses.</p>
-            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+            <p style="max-width: 700px; margin-bottom: 3rem; color: var(--text-dim); font-size: 1.3rem;">A prestigious inter-house academic competition. Open to students from Classes 3 to 10, representing one of four distinguished houses. Join us to test your knowledge, critical thinking, and competitive spirit.</p>
+            <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
                 <a href="#register" class="btn btn-primary">Register Now</a>
                 <a href="#details" class="btn">Competition Details</a>
             </div>
         </section>
-        <section id="details">
-            <h2>Competition Details</h2>
-            <p class="section-sub">Everything you need to know before registering.</p>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
-                <div class="glass-card"><h3 style="font-family: 'Playfair Display'; color: var(--gold);">Eligibility</h3><p>Open to all students in Classes 3 through 10.</p></div>
-                <div class="glass-card"><h3 style="font-family: 'Playfair Display'; color: var(--gold);">Houses</h3><p>Every participant competes as part of one of the four fixed houses.</p></div>
-                <div class="glass-card"><h3 style="font-family: 'Playfair Display'; color: var(--gold);">Official Roll Number</h3><p>Assigned later by organizers (target: 16 Sept 2026). Separate from school roll number.</p></div>
-            </div>
-        </section>
+
         <section id="gallery" style="text-align: center;">
             <h2>Inauguration</h2>
             <p class="section-sub">The official launch of the BVMASH Quiz Club.</p>
-            <div class="glass-card" style="display: inline-block; padding: 10px;">
-                <img src="assets/inauguration.jpg" alt="Inauguration" style="max-width: 100%; border-radius: 8px; height: auto;" onerror="this.parentElement.style.display='none'">
+            <div class="glass-card" style="display: inline-block; padding: 15px;">
+                <img src="assets/inauguration.jpg" alt="Inauguration" style="max-width: 100%; border-radius: 12px; height: auto;" onerror="this.parentElement.style.display='none'">
             </div>
         </section>
-        <section id="resources" style="text-align: center;">
-            <h2>Notices & Resources</h2>
-            <p class="section-sub">Download official documents and rulebooks.</p>
-            <a href="assets/rulebook.pdf" target="_blank" class="btn">📄 Official Rulebook (PDF)</a>
+
+        <section id="details">
+            <h2>Competition Details</h2>
+            <p class="section-sub">Everything you need to know before registering.</p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem;">
+                <div class="glass-card"><h3>Eligibility</h3><p>Open to all students in Classes 3 through 10. No prior quiz experience is required, only a passion for learning.</p></div>
+                <div class="glass-card"><h3>Houses</h3><p>Every participant competes as part of one of the four fixed houses: Jasmine, Lily, Lotus, or Daffodil.</p></div>
+                <div class="glass-card"><h3>Official Roll Number</h3><p>Assigned later by organizers (target: 16 Sept 2026). This is separate from the school roll number and will be used for all quiz identifications.</p></div>
+                <div class="glass-card"><h3>Registration</h3><p>Fill the form once with accurate details to receive an internal registration ID as a receipt.</p></div>
+                <div class="glass-card"><h3>Accurate Information</h3><p>Participants must provide accurate information; inaccurate submissions may be delayed during verification.</p></div>
+                <div class="glass-card"><h3>Consent</h3><p>Registering requires actively agreeing to a consent statement about how the submitted information will be used.</p></div>
+            </div>
         </section>
+
+        <section id="rules">
+            <h2>Rules & Format</h2>
+            <p class="section-sub">Understand the structure of the competition.</p>
+            <div class="glass-card">
+                <h3>Preliminary Round</h3>
+                <p>All registered students will participate in a written preliminary round. The top scorers from each house will advance to the on-stage finals.</p>
+            </div>
+            <div class="glass-card">
+                <h3>Final Round</h3>
+                <p>The finals will feature direct elimination, rapid-fire buzzer rounds, and a visual connect round. Points will be awarded for correct answers and deducted for incorrect ones in buzzer rounds.</p>
+            </div>
+            <div class="glass-card" style="text-align: center; border-color: var(--gold);">
+                <a href="assets/rulebook.pdf" target="_blank" class="btn btn-primary">📄 Download Full Rulebook (PDF)</a>
+            </div>
+        </section>
+
         <section id="register">
-            <div style="max-width: 700px; margin: 0 auto;">
+            <div style="max-width: 900px; margin: 0 auto;">
                 <h2>Register Now</h2>
+                <p class="section-sub">Please fill out the form carefully. All fields are required.</p>
                 <form id="reg-form" novalidate class="glass-card">
                     <div style="position: absolute; left: -9999px;"><input type="text" name="website"></div>
-                    <div class="form-group" style="margin-bottom: 1.5rem;"><label style="display:block; margin-bottom:0.5rem; font-size:0.9rem; color:var(--text-dim);">Full name <span style="color:var(--lily)">*</span></label><input type="text" id="fullName" required class="in-st"><div style="color:var(--lily); font-size:0.85rem; display:none;" id="err-fullName"></div></div>
-                    <div class="form-group" style="margin-bottom: 1.5rem;"><label style="display:block; margin-bottom:0.5rem; font-size:0.9rem; color:var(--text-dim);">Class <span style="color:var(--lily)">*</span></label><select id="studentClass" required class="in-st"><option value="">Select</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select><div style="color:var(--lily); font-size:0.85rem; display:none;" id="err-studentClass"></div></div>
-                    <div class="form-group" style="margin-bottom: 1.5rem;"><label style="display:block; margin-bottom:0.5rem; font-size:0.9rem; color:var(--text-dim);">Section <span style="color:var(--lily)">*</span></label><input type="text" id="section" maxlength="10" required class="in-st"><div style="color:var(--lily); font-size:0.85rem; display:none;" id="err-section"></div></div>
-                    <div class="form-group" style="margin-bottom: 1.5rem;"><label style="display:block; margin-bottom:0.5rem; font-size:0.9rem; color:var(--text-dim);">Phone number <span style="color:var(--lily)">*</span></label><input type="tel" id="phone" required class="in-st"><div style="color:var(--lily); font-size:0.85rem; display:none;" id="err-phone"></div></div>
-                    <div class="form-group" style="margin-bottom: 1.5rem;"><label style="display:block; margin-bottom:0.5rem; font-size:0.9rem; color:var(--text-dim);">School roll number <span style="color:var(--lily)">*</span></label><input type="text" id="schoolRollNo" maxlength="30" required class="in-st"><div style="color:var(--lily); font-size:0.85rem; display:none;" id="err-schoolRollNo"></div></div>
-                    <div class="form-group" style="margin-bottom: 1.5rem;"><label style="display:block; margin-bottom:0.5rem; font-size:0.9rem; color:var(--text-dim);">Email address <span style="color:var(--lily)">*</span></label><input type="email" id="email" placeholder="you@gmail.com" required class="in-st"><div style="color:var(--lily); font-size:0.85rem; display:none;" id="err-email"></div></div>
-                    <div class="form-group" style="margin-bottom: 1.5rem;">
-                        <label style="display:block; margin-bottom:0.5rem; font-size:0.9rem; color:var(--text-dim);">House <span style="color:var(--lily)">*</span></label>
+                    <div class="form-group" style="margin-bottom: 2rem;"><label style="display:block; margin-bottom:0.8rem; font-size:1.1rem; color:var(--text-dim);">Full name <span style="color:var(--lily)">*</span></label><input type="text" id="fullName" required class="in-st"><div style="color:var(--lily); font-size:1rem; display:none;" id="err-fullName"></div></div>
+                    <div class="form-group" style="margin-bottom: 2rem;"><label style="display:block; margin-bottom:0.8rem; font-size:1.1rem; color:var(--text-dim);">Class <span style="color:var(--lily)">*</span></label><select id="studentClass" required class="in-st"><option value="">Select</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select><div style="color:var(--lily); font-size:1rem; display:none;" id="err-studentClass"></div></div>
+                    <div class="form-group" style="margin-bottom: 2rem;"><label style="display:block; margin-bottom:0.8rem; font-size:1.1rem; color:var(--text-dim);">Section <span style="color:var(--lily)">*</span></label><input type="text" id="section" maxlength="10" required class="in-st"><div style="color:var(--lily); font-size:1rem; display:none;" id="err-section"></div></div>
+                    <div class="form-group" style="margin-bottom: 2rem;"><label style="display:block; margin-bottom:0.8rem; font-size:1.1rem; color:var(--text-dim);">Phone number <span style="color:var(--lily)">*</span></label><input type="tel" id="phone" required class="in-st"><div style="color:var(--lily); font-size:1rem; display:none;" id="err-phone"></div></div>
+                    <div class="form-group" style="margin-bottom: 2rem;"><label style="display:block; margin-bottom:0.8rem; font-size:1.1rem; color:var(--text-dim);">School roll number <span style="color:var(--lily)">*</span></label><input type="text" id="schoolRollNo" maxlength="30" required class="in-st"><div style="color:var(--lily); font-size:1rem; display:none;" id="err-schoolRollNo"></div></div>
+                    <div class="form-group" style="margin-bottom: 2rem;"><label style="display:block; margin-bottom:0.8rem; font-size:1.1rem; color:var(--text-dim);">Email address <span style="color:var(--lily)">*</span></label><input type="email" id="email" placeholder="you@gmail.com" required class="in-st"><div style="color:var(--lily); font-size:1rem; display:none;" id="err-email"></div></div>
+                    <div class="form-group" style="margin-bottom: 2rem;">
+                        <label style="display:block; margin-bottom:0.8rem; font-size:1.1rem; color:var(--text-dim);">House <span style="color:var(--lily)">*</span></label>
                         <div class="house-grid">
                             <label class="house-tile" style="--c: var(--jasmine)" onclick="selectHouse(this)"><input type="radio" name="house" value="JASMINE" required> Jasmine</label>
                             <label class="house-tile" style="--c: var(--lily)" onclick="selectHouse(this)"><input type="radio" name="house" value="LILY" required> Lily</label>
                             <label class="house-tile" style="--c: var(--lotus)" onclick="selectHouse(this)"><input type="radio" name="house" value="LOTUS" required> Lotus</label>
                             <label class="house-tile" style="--c: var(--daffodil)" onclick="selectHouse(this)"><input type="radio" name="house" value="DAFFODIL" required> Daffodil</label>
                         </div>
-                        <div style="color:var(--lily); font-size:0.85rem; display:none;" id="err-house"></div>
+                        <div style="color:var(--lily); font-size:1rem; display:none;" id="err-house"></div>
                     </div>
-                    <div class="form-group" style="border: 1px solid var(--border); padding: 1rem; border-radius: 6px; margin-bottom:1.5rem;">
-                        <label style="font-weight: 400; display: flex; gap: 0.5rem; align-items: flex-start; color:var(--text-dim); font-size:0.9rem;"><input type="checkbox" id="consent" required style="width: auto; margin-top: 5px;"><span>I confirm that the information above is accurate, and I agree that it is being submitted for the purpose of participation and administration of the BVMASH Quiz Club.</span></label>
-                        <div style="color:var(--lily); font-size:0.85rem; display:none;" id="err-consent"></div>
+                    <div class="form-group" style="border: 1px solid var(--border); padding: 2rem; border-radius: 8px; margin-bottom:2rem;">
+                        <label style="font-weight: 400; display: flex; gap: 1rem; align-items: flex-start; color:var(--text-dim); font-size:1.1rem;"><input type="checkbox" id="consent" required style="width: 20px; height: 20px; margin-top: 5px; accent-color: var(--gold);"><span>I confirm that the information above is accurate, and I agree that it is being submitted for the purpose of participation and administration of the BVMASH Quiz Club.</span></label>
+                        <div style="color:var(--lily); font-size:1rem; display:none;" id="err-consent"></div>
                     </div>
-                    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1rem; border:none;" id="submitBtn">Register</button>
-                    <div style="color:var(--lily); text-align: center; margin-top: 1rem; font-weight: bold; display:none;" id="err-general"></div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1.5rem; border:none; font-size: 1.3rem;" id="submitBtn">Register</button>
+                    <div style="color:var(--lily); text-align: center; margin-top: 1.5rem; font-weight: bold; display:none; font-size: 1.1rem;" id="err-general"></div>
                 </form>
-                <div id="confirmation" style="display: none; text-align: center; padding: 3rem 0;">
-                    <div style="width: 60px; height: 60px; background: var(--jasmine); color: #fff; border-radius: 50%; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; font-size: 2rem;">✓</div>
+                <div id="confirmation" style="display: none; text-align: center; padding: 5rem 0;">
+                    <div style="width: 80px; height: 80px; background: var(--jasmine); color: #fff; border-radius: 50%; margin: 0 auto 2rem; display: flex; align-items: center; justify-content: center; font-size: 3rem;">✓</div>
                     <h2>Registration received.</h2>
-                    <p style="color:var(--text-dim)">Your official BVMASH Quiz Club roll number will be assigned later (target: 16 Sept 2026).</p>
-                    <div class="glass-card" style="border: 1px dashed var(--gold); padding: 1rem; margin: 2rem auto; max-width: 300px;"><span style="font-size: 0.8rem; text-transform: uppercase; color:var(--text-dim)">Registration ID</span><br><strong id="regIdDisplay" style="font-size: 1.5rem; font-family: 'Playfair Display'; color:var(--gold)"></strong></div>
-                    <p style="font-size: 0.8rem; color: var(--text-dim);">Note: This ID is not the official Quiz Roll Number.</p>
+                    <p style="color:var(--text-dim); font-size:1.2rem;">Your official BVMASH Quiz Club roll number will be assigned later (target: 16 Sept 2026).</p>
+                    <div class="glass-card" style="border: 1px dashed var(--gold); padding: 2rem; margin: 3rem auto; max-width: 400px;"><span style="font-size: 1rem; text-transform: uppercase; color:var(--text-dim)">Registration ID</span><br><strong id="regIdDisplay" style="font-size: 2rem; font-family: 'Playfair Display'; color:var(--gold)"></strong></div>
+                    <p style="font-size: 1rem; color: var(--text-dim);">Note: This ID is not the official Quiz Roll Number.</p>
                 </div>
             </div>
         </section>
     </main>
-    <footer style="text-align: center; padding: 2rem 1.5rem; border-top: 1px solid var(--border); margin-top: 2rem;">
-        <div style="font-family: 'Playfair Display', serif; font-style: italic; margin-bottom: 1rem; color:var(--gold)">BVMASH Quiz Club · Learn. Think. Compete.</div>
-        <a href="admin.html" style="color: var(--text-dim); font-size: 0.9rem; text-decoration: none;">Organizer Login</a>
-        <div style="font-size: 0.8rem; color: #555; margin-top: 1rem;">Crafted by Ayushman Choudhary</div>
+
+    <footer style="text-align: center; padding: 4rem 1.5rem; border-top: 1px solid var(--border); margin-top: 4rem;">
+        <div style="font-family: 'Playfair Display', serif; font-style: italic; margin-bottom: 1.5rem; color:var(--gold); font-size: 1.5rem;">BVMASH Quiz Club · Learn. Think. Compete.</div>
+        <a href="admin.html" style="color: var(--text-dim); font-size: 1.1rem; text-decoration: none;">Organizer Login</a>
+        <div style="font-size: 0.9rem; color: #555; margin-top: 2rem;">Crafted by Ayushman Choudhary</div>
     </footer>
-        <script>
-        let DB_URL = "https://bvmash-e505a-default-rtdb.asia-southeast1.firebasedatabase.app"; 
+
+    <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxnv0rllOWtif38qHrFBh7xJyO15e5stlrainAimsmdXQQZDHyIWm2iAzOV6YY10t4QNA/exec"; 
         
+        // Particle Background
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
         function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         resizeCanvas(); window.addEventListener('resize', resizeCanvas);
-        for(let i=0; i<50; i++) { particles.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, vx: (Math.random()-0.5)*0.5, vy: (Math.random()-0.5)*0.5 }); }
+        for(let i=0; i<60; i++) { particles.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, vx: (Math.random()-0.5)*0.5, vy: (Math.random()-0.5)*0.5 }); }
         function animate() {
             ctx.clearRect(0,0,canvas.width,canvas.height);
             particles.forEach((p,i) => {
@@ -160,7 +197,7 @@
                 for(let j=i+1; j<particles.length; j++) {
                     let dx = p.x - particles[j].x, dy = p.y - particles[j].y;
                     let dist = Math.sqrt(dx*dx + dy*dy);
-                    if(dist < 120) { ctx.strokeStyle = `rgba(255, 255, 255, ${0.1 - dist/1200})`; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(particles[j].x, particles[j].y); ctx.stroke(); }
+                    if(dist < 150) { ctx.strokeStyle = `rgba(255, 255, 255, ${0.1 - dist/1500})`; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(particles[j].x, particles[j].y); ctx.stroke(); }
                 }
             });
             requestAnimationFrame(animate);
@@ -202,27 +239,23 @@
             document.getElementById('submitBtn').textContent = 'Submitting...';
 
             try {
-                if (DB_URL.endsWith("/")) DB_URL = DB_URL.slice(0, -1);
-                if (!DB_URL.startsWith("http")) DB_URL = "https://" + DB_URL;
-
-                const res = await fetch(`${DB_URL}/registrations.json`, {
+                const res = await fetch(SCRIPT_URL, {
                     method: 'POST',
-                    body: JSON.stringify({ timestamp: new Date().toISOString(), fullName, studentClass, section, phone, schoolRollNo, email, house: house.value, consentGiven: consent, status: "Pending", quizRollNo: "" })
+                    body: JSON.stringify({ action: "register", fullName, studentClass, section, phone, schoolRollNo, email, house: house.value, consentGiven: consent })
                 });
                 const data = await res.json();
                 
-                if (data.name) {
-                    const regId = "REG-" + data.name.substring(1, 7).toUpperCase();
+                if (data.regId) {
                     form.style.display = 'none';
                     document.getElementById('confirmation').style.display = 'block';
-                    document.getElementById('regIdDisplay').textContent = regId;
+                    document.getElementById('regIdDisplay').textContent = data.regId;
                 } else {
                     showErr('general', 'Database Error: ' + JSON.stringify(data));
                     document.getElementById('submitBtn').disabled = false; 
                     document.getElementById('submitBtn').textContent = 'Register';
                 }
             } catch (err) {
-                showErr('general', 'Network/URL Error: Check your Firebase URL.');
+                showErr('general', 'Network/URL Error: Check your Script URL.');
                 document.getElementById('submitBtn').disabled = false; 
                 document.getElementById('submitBtn').textContent = 'Register';
             }
