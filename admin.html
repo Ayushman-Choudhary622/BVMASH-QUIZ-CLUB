@@ -47,8 +47,12 @@
         </div>
     </div>
         <script>
-        const DB_URL = "https://bvmash-e505a-default-rtdb.asia-southeast1.firebasedatabase.app/"; 
-        const ADMIN_PASS = "bvmash-admin";
+        // PASTE FIREBASE URL HERE - NO TRAILING SLASH!
+        let DB_URL = "https://bvmash-e505a-default-rtdb.asia-southeast1.firebasedatabase.app/";
+        
+        // <--- CHANGE YOUR ADMIN PASSWORD HERE ---> //
+        const ADMIN_PASS = "bvmash-admin"; 
+        
         let DATA = [];
 
         function login() {
@@ -61,6 +65,9 @@
         function logout() { location.reload(); }
 
         async function fetchData() {
+            if (DB_URL.endsWith("/")) DB_URL = DB_URL.slice(0, -1);
+            if (!DB_URL.startsWith("http")) DB_URL = "https://" + DB_URL;
+
             const res = await fetch(`${DB_URL}/registrations.json`);
             const data = await res.json();
             let rows = [];
